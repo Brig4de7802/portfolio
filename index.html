@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIっとホームページ | AI搭載サイト制作</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --yellow:#FFE047;
+  --pink:#FF6B9D;
+  --blue:#4ECDC4;
+  --orange:#FF8C42;
+  --purple:#A855F7;
+  --green:#4ADE80;
+  --bg:#FFFDF5;
+  --ink:#1a1a1a;
+  --white:#ffffff;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden}
+
+/* ── NOISE TEXTURE ── */
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:16px;left:50%;transform:translateX(-50%);
+  z-index:200;
+  background:var(--white);
+  border:2.5px solid var(--ink);
+  border-radius:100px;
+  padding:10px 24px;
+  display:flex;align-items:center;gap:32px;
+  box-shadow:4px 4px 0 var(--ink);
+  width:min(720px, calc(100% - 32px));
+}
+.logo{
+  font-family:'Fredoka One',cursive;
+  font-size:22px;color:var(--ink);text-decoration:none;
+  display:flex;align-items:center;gap:6px
+}
+.logo-dot{
+  width:10px;height:10px;border-radius:50%;
+  background:var(--pink);display:inline-block;
+  animation:bounce-dot 1.4s ease-in-out infinite
+}
+@keyframes bounce-dot{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.nav-links{display:flex;gap:20px;list-style:none;margin-left:auto}
+.nav-links a{font-size:13px;font-weight:500;color:var(--ink);text-decoration:none;transition:color .15s}
+.nav-links a:hover{color:var(--pink)}
+.nav-cta{
+  background:var(--yellow);color:var(--ink);text-decoration:none;
+  font-size:13px;font-weight:700;padding:8px 18px;
+  border-radius:100px;border:2px solid var(--ink);
+  box-shadow:2px 2px 0 var(--ink);
+  transition:transform .1s,box-shadow .1s;white-space:nowrap
+}
+.nav-cta:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink)}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;display:flex;align-items:center;
+  padding:120px 40px 80px;position:relative;
+}
+/* floating shapes */
+.shape{position:absolute;border-radius:50%;opacity:0.15;animation:float 6s ease-in-out infinite}
+.s1{width:300px;height:300px;background:var(--yellow);top:10%;left:-5%;animation-delay:0s}
+.s2{width:200px;height:200px;background:var(--pink);top:20%;right:5%;animation-delay:-2s}
+.s3{width:150px;height:150px;background:var(--blue);bottom:20%;left:15%;animation-delay:-4s}
+.s4{width:250px;height:250px;background:var(--purple);bottom:5%;right:-3%;animation-delay:-1s}
+@keyframes float{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-20px) scale(1.03)}}
+
+.hero-inner{
+  max-width:1200px;margin:0 auto;width:100%;
+  display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;
+  position:relative;z-index:1
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--yellow);color:var(--ink);
+  font-size:13px;font-weight:700;padding:8px 18px;
+  border-radius:100px;border:2px solid var(--ink);
+  box-shadow:3px 3px 0 var(--ink);margin-bottom:24px
+}
+.hero h1{
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(42px,6vw,72px);
+  line-height:1.1;margin-bottom:20px;
+  color:var(--ink)
+}
+.hero h1 .hi{
+  display:inline-block;
+  background:var(--yellow);
+  padding:0 8px;
+  border-radius:8px;
+  border:2px solid var(--ink);
+  transform:rotate(-1.5deg);
+  color:var(--ink)
+}
+.hero h1 .ai{
+  background:var(--pink);
+  padding:0 8px;border-radius:8px;
+  border:2px solid var(--ink);
+  transform:rotate(1deg);display:inline-block;
+  color:var(--white)
+}
+.hero-sub{font-size:16px;line-height:1.9;color:#444;margin-bottom:36px;max-width:480px}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn-main{
+  background:var(--pink);color:var(--white);text-decoration:none;
+  font-size:15px;font-weight:700;padding:16px 32px;
+  border-radius:100px;border:2.5px solid var(--ink);
+  box-shadow:4px 4px 0 var(--ink);
+  transition:transform .1s,box-shadow .1s;display:inline-flex;align-items:center;gap:8px
+}
+.btn-main:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+.btn-sub{
+  background:var(--white);color:var(--ink);text-decoration:none;
+  font-size:15px;font-weight:700;padding:16px 32px;
+  border-radius:100px;border:2.5px solid var(--ink);
+  box-shadow:4px 4px 0 var(--ink);
+  transition:transform .1s,box-shadow .1s
+}
+.btn-sub:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+.hero-stats{
+  display:flex;gap:24px;margin-top:36px;flex-wrap:wrap
+}
+.stat{text-align:center}
+.stat-num{font-family:'Fredoka One',cursive;font-size:36px;color:var(--pink)}
+.stat-label{font-size:12px;color:#666;font-weight:500}
+
+/* Hero Card */
+.hero-card{
+  background:var(--white);border:2.5px solid var(--ink);
+  border-radius:24px;box-shadow:8px 8px 0 var(--ink);
+  overflow:hidden;
+}
+.card-header{
+  background:var(--ink);padding:12px 20px;
+  display:flex;align-items:center;gap:8px
+}
+.dot{width:12px;height:12px;border-radius:50%}
+.dot.r{background:#FF5F56}.dot.y{background:#FFBD2E}.dot.g{background:#27C93F}
+.card-title{color:rgba(255,255,255,0.6);font-size:12px;margin-left:8px}
+.chat-area{padding:20px;display:flex;flex-direction:column;gap:12px;background:#FAFAFA;min-height:280px}
+.msg{max-width:80%;padding:12px 16px;border-radius:18px;font-size:14px;line-height:1.6}
+.msg.bot{
+  background:var(--white);border:2px solid var(--ink);
+  border-radius:18px 18px 18px 4px;align-self:flex-start;
+  box-shadow:2px 2px 0 var(--ink)
+}
+.msg.user{
+  background:var(--pink);color:var(--white);
+  border-radius:18px 18px 4px 18px;align-self:flex-end;
+  border:2px solid var(--ink)
+}
+.bot-icon{
+  width:28px;height:28px;background:var(--yellow);
+  border-radius:50%;border:2px solid var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;margin-bottom:4px
+}
+.typing{display:flex;gap:4px;padding:4px 0}
+.typing span{
+  width:8px;height:8px;border-radius:50%;background:#bbb;
+  animation:typing 1.2s ease-in-out infinite
+}
+.typing span:nth-child(2){animation-delay:.2s}
+.typing span:nth-child(3){animation-delay:.4s}
+@keyframes typing{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+
+/* ── WORRY ── */
+.section-worry{
+  padding:80px 40px;background:var(--yellow);
+  border-top:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink)
+}
+.worry-inner{max-width:1100px;margin:0 auto}
+.section-label{
+  font-family:'Fredoka One',cursive;font-size:14px;
+  letter-spacing:.1em;color:var(--ink);opacity:.6;
+  margin-bottom:12px;text-transform:uppercase
+}
+.section-title{
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(28px,4vw,44px);
+  margin-bottom:40px;color:var(--ink);line-height:1.3
+}
+.worry-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:20px
+}
+.worry-card{
+  background:var(--white);border:2.5px solid var(--ink);
+  border-radius:20px;padding:28px;
+  box-shadow:5px 5px 0 var(--ink);
+  transition:transform .15s,box-shadow .15s
+}
+.worry-card:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink)}
+.worry-emoji{font-size:36px;margin-bottom:12px}
+.worry-card h3{font-size:16px;font-weight:700;margin-bottom:8px;color:var(--ink)}
+.worry-card p{font-size:14px;color:#555;line-height:1.7}
+
+/* ── SERVICES ── */
+.section-services{padding:100px 40px;background:var(--bg)}
+.services-inner{max-width:1100px;margin:0 auto}
+.service-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+.service-card{
+  border:2.5px solid var(--ink);border-radius:24px;overflow:hidden;
+  box-shadow:6px 6px 0 var(--ink);
+  transition:transform .15s,box-shadow .15s;cursor:pointer
+}
+.service-card:hover{transform:translate(-3px,-3px);box-shadow:9px 9px 0 var(--ink)}
+.service-header{padding:28px 28px 20px}
+.service-icon{
+  width:52px;height:52px;border-radius:14px;
+  border:2.5px solid var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;margin-bottom:16px
+}
+.service-card h3{font-family:'Fredoka One',cursive;font-size:22px;margin-bottom:8px}
+.service-card p{font-size:14px;color:#555;line-height:1.7}
+.service-footer{
+  padding:16px 28px;
+  border-top:2px solid var(--ink);
+  display:flex;justify-content:space-between;align-items:center
+}
+.service-price{font-weight:700;font-size:15px}
+.service-arrow{
+  width:32px;height:32px;background:var(--ink);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;color:white;font-size:16px
+}
+.card-blue .service-header{background:#EEF8FF}
+.card-pink .service-header{background:#FFF0F6}
+.card-green .service-header{background:#F0FFF4}
+.card-blue .service-icon{background:#4ECDC4}
+.card-pink .service-icon{background:var(--pink)}
+.card-green .service-icon{background:var(--green)}
+
+/* ── WORKS ── */
+.section-works{padding:100px 40px;background:var(--section);border-top:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink)}
+.works-inner{max-width:1100px;margin:0 auto}
+.works-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+.works-grid-bottom{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:24px}
+.work-card{
+  background:var(--white);border:2.5px solid var(--ink);border-radius:20px;
+  overflow:hidden;box-shadow:6px 6px 0 var(--ink);
+  transition:transform .15s,box-shadow .15s
+}
+.work-card:hover{transform:translate(-3px,-3px);box-shadow:9px 9px 0 var(--ink)}
+.work-preview{width:100%;aspect-ratio:16/10;overflow:hidden;border-bottom:2.5px solid var(--ink)}
+.work-preview svg{width:100%;height:100%}
+.work-info{padding:18px 20px}
+.work-tag{
+  display:inline-block;font-size:11px;font-weight:700;
+  padding:4px 12px;border-radius:100px;border:1.5px solid var(--ink);
+  margin-bottom:10px
+}
+.work-info h3{font-family:'Fredoka One',cursive;font-size:18px;margin-bottom:6px}
+.work-info p{font-size:13px;color:#666;line-height:1.6}
+.work-badges{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+.work-badge{
+  font-size:11px;font-weight:500;padding:3px 10px;
+  border-radius:100px;background:var(--mid);color:#555;
+  border:1px solid var(--border)
+}
+@media(max-width:768px){.works-grid{grid-template-columns:1fr}}
+
+/* ── FLOW ── */
+.section-flow{
+  padding:100px 40px;
+  background:var(--ink);
+}
+.flow-inner{max-width:1100px;margin:0 auto}
+.flow-inner .section-label{color:rgba(255,255,255,0.4)}
+.flow-inner .section-title{color:var(--white)}
+.flow-steps{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:48px;
+  position:relative
+}
+.flow-step{
+  background:rgba(255,255,255,0.06);
+  border:1.5px solid rgba(255,255,255,0.15);
+  border-radius:20px;padding:24px;
+  position:relative
+}
+.step-num{
+  font-family:'Fredoka One',cursive;font-size:48px;
+  opacity:.15;color:var(--white);line-height:1;margin-bottom:12px
+}
+.step-icon{font-size:28px;margin-bottom:10px}
+.step-title{font-weight:700;color:var(--white);margin-bottom:8px;font-size:15px}
+.step-desc{font-size:13px;color:rgba(255,255,255,.55);line-height:1.7}
+.step-badge{
+  position:absolute;top:16px;right:16px;
+  background:var(--yellow);color:var(--ink);
+  font-size:11px;font-weight:700;padding:4px 10px;
+  border-radius:100px;border:1.5px solid rgba(0,0,0,0.2)
+}
+
+/* ── DEMO SECTION ── */
+.section-demo{padding:100px 40px;background:var(--bg)}
+.demo-inner{
+  max-width:1100px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center
+}
+.demo-text .section-title{margin-bottom:16px}
+.demo-text p{font-size:15px;color:#555;line-height:1.8;margin-bottom:24px}
+.demo-features{display:flex;flex-direction:column;gap:12px;margin-bottom:32px}
+.demo-feat{
+  display:flex;align-items:center;gap:12px;
+  background:var(--white);border:2px solid var(--border);
+  border-radius:12px;padding:12px 16px
+}
+.feat-icon{
+  width:36px;height:36px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+  flex-shrink:0
+}
+.feat-text{font-size:14px;font-weight:500}
+.demo-card{
+  background:var(--white);border:2.5px solid var(--ink);
+  border-radius:24px;box-shadow:8px 8px 0 var(--ink);
+  overflow:hidden
+}
+.demo-bar{
+  background:linear-gradient(90deg,var(--pink),var(--orange));
+  padding:12px 20px;display:flex;align-items:center;gap:10px
+}
+.demo-bar-title{color:white;font-weight:700;font-size:14px}
+.demo-bar-sub{color:rgba(255,255,255,.7);font-size:12px;margin-left:auto}
+.demo-msgs{padding:20px;background:#FAFAFA;display:flex;flex-direction:column;gap:10px;min-height:260px}
+.qbtn-row{display:flex;gap:8px;flex-wrap:wrap;padding:0 20px 16px;background:#FAFAFA}
+.qbtn{
+  background:var(--white);border:1.5px solid var(--ink);
+  border-radius:100px;font-size:12px;font-weight:500;
+  padding:6px 14px;cursor:pointer;
+  transition:background .15s,color .15s
+}
+.qbtn:hover{background:var(--pink);color:white;border-color:var(--pink)}
+.demo-input-row{
+  display:flex;gap:8px;padding:16px 20px;
+  border-top:2px solid var(--border);background:white
+}
+.demo-input{
+  flex:1;border:2px solid var(--border);border-radius:100px;
+  padding:10px 16px;font-size:14px;font-family:inherit;
+  outline:none;transition:border-color .2s
+}
+.demo-input:focus{border-color:var(--pink)}
+.demo-send{
+  background:var(--pink);color:white;border:none;
+  border-radius:100px;padding:0 18px;font-size:18px;cursor:pointer;
+  border:2px solid var(--ink);transition:transform .1s
+}
+.demo-send:hover{transform:scale(1.05)}
+
+/* ── CTA ── */
+.section-cta{
+  padding:100px 40px;background:var(--bg);text-align:center
+}
+.cta-inner{max-width:680px;margin:0 auto}
+.cta-bubble{
+  background:var(--pink);border:2.5px solid var(--ink);
+  border-radius:100px;display:inline-block;padding:8px 24px;
+  font-family:'Fredoka One',cursive;font-size:16px;color:white;
+  box-shadow:3px 3px 0 var(--ink);margin-bottom:28px
+}
+.cta-inner h2{
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(32px,5vw,52px);color:var(--ink);
+  line-height:1.2;margin-bottom:20px
+}
+.cta-inner p{font-size:16px;color:#555;line-height:1.8;margin-bottom:36px}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.cta-box{
+  margin-top:40px;background:var(--yellow);
+  border:2.5px solid var(--ink);border-radius:20px;
+  padding:24px 32px;box-shadow:5px 5px 0 var(--ink);
+  display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap
+}
+.cta-box-item{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--ink);color:rgba(255,255,255,.7);
+  padding:40px;text-align:center;font-size:13px
+}
+footer .footer-logo{
+  font-family:'Fredoka One',cursive;font-size:28px;
+  color:white;margin-bottom:16px;display:block
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  nav{gap:16px}
+  .nav-links{display:none}
+  .hero-inner,.demo-inner{grid-template-columns:1fr}
+  .worry-grid,.service-cards,.voice-cards{grid-template-columns:1fr}
+  .flow-steps{grid-template-columns:1fr 1fr}
+  .hero{padding:100px 20px 60px}
+  .section-worry,.section-services,.section-flow,.section-demo,.section-cta{padding:60px 20px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">AIっと<span class="logo-dot"></span>制作</a>
+  <ul class="nav-links">
+    <li><a href="#services">サービス</a></li>
+    <li><a href="#demo">デモ</a></li>
+    <li><a href="#flow">流れ</a></li>
+
+  </ul>
+  <a href="#cta" class="nav-cta">📩 無料相談</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="shape s1"></div>
+  <div class="shape s2"></div>
+  <div class="shape s3"></div>
+  <div class="shape s4"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge">🤖 AI搭載ホームページ制作</div>
+      <h1>
+        お店に<span class="ai">AI</span>の<br>
+        <span class="hi">スタッフ</span>を<br>
+        追加しよう！
+      </h1>
+      <p class="hero-sub">24時間お客様の質問に答えて、予約を受け付けて、あなたのお店を盛り上げる。AIチャット搭載ホームページを、わかりやすい価格でお届けします。</p>
+      <div class="hero-btns">
+        <span class="btn-main" style="cursor:default">🎉 デモを体験する</span>
+        <span class="btn-sub" style="cursor:default">料金を見る</span>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><div class="stat-num">24h</div><div class="stat-label">自動対応</div></div>
+        <div class="stat"><div class="stat-num">¥180,000〜</div><div class="stat-label">制作費用</div></div>
+        <div class="stat"><div class="stat-num">月¥150〜</div><div class="stat-label">API費用</div></div>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="card-header">
+        <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+        <span class="card-title">あなたのお店のAIスタッフ</span>
+      </div>
+      <div class="chat-area">
+        <div class="bot-icon">🤖</div>
+        <div class="msg bot">こんにちは！当店のAIスタッフです✨<br>お気軽にご質問どうぞ！</div>
+        <div class="msg user">おすすめメニューを教えて！</div>
+        <div class="msg bot">🍜 一番人気は「特製醤油らーめん」です！<br>とろとろチャーシューが自慢で、830円でお召し上がりいただけます。辛さの調整もできますよ！</div>
+        <div class="msg user">席の予約できる？</div>
+        <div class="msg bot">
+          はい、予約承ります！<br>
+          📅 ご希望の日時を教えてください。<br><br>
+          <div class="typing"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORRY -->
+<section class="section-worry">
+  <div class="worry-inner">
+    <div class="section-label">こんなお悩みありませんか？</div>
+    <h2 class="section-title">お店のよくある<br>お困りごと😔</h2>
+    <div class="worry-grid">
+      <div class="worry-card">
+        <div class="worry-emoji">📞</div>
+        <h3>電話対応が多すぎる…</h3>
+        <p>「今日のランチは何ですか？」「予約できますか？」—毎日同じ質問の繰り返し。AIが代わりに答えます！</p>
+      </div>
+      <div class="worry-card">
+        <div class="worry-emoji">🌙</div>
+        <h3>夜中の問い合わせに対応できない</h3>
+        <p>深夜にホームページを見て問い合わせしてくれた人に、翌日返信。機会を逃していませんか？AIは24時間対応！</p>
+      </div>
+      <div class="worry-card">
+        <div class="worry-emoji">💻</div>
+        <h3>ホームページが古くて恥ずかしい</h3>
+        <p>スマホで見づらい、情報が古い、ライバル店に負けてる気がする。プロが一から作ります！</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section-services" id="services">
+  <div class="services-inner">
+    <div class="section-label">サービス内容</div>
+    <h2 class="section-title">3つのプランから<br>選べます🎨</h2>
+    <div class="service-cards">
+      <div class="service-card card-blue" onclick="openModal('basic')" style="cursor:pointer">
+        <div class="service-header">
+          <div class="service-icon">🌐</div>
+          <h3>ベーシック</h3>
+          <p>しっかりとしたホームページ。スマホ対応・お問い合わせフォーム・地図付き。お店の魅力をしっかり伝えます。</p>
+        </div>
+        <div class="service-footer">
+          <span class="service-price">¥180,000〜</span>
+          <div class="service-arrow" style="width:auto;padding:0 12px;border-radius:100px;font-size:13px;font-weight:700">詳細を見る →</div>
+        </div>
+      </div>
+      <div class="service-card card-pink" onclick="openModal('ai')" style="cursor:pointer">
+        <div class="service-header">
+          <div class="service-icon">🤖</div>
+          <h3>AIチャット付き ⭐人気</h3>
+          <p>ベーシック＋AIスタッフ搭載！メニュー案内・予約受付・よくある質問を24時間自動対応。</p>
+        </div>
+        <div class="service-footer">
+          <span class="service-price">¥260,000〜</span>
+          <div class="service-arrow" style="width:auto;padding:0 12px;border-radius:100px;font-size:13px;font-weight:700">詳細を見る →</div>
+        </div>
+      </div>
+      <div class="service-card card-green" onclick="openModal('full')" style="cursor:pointer">
+        <div class="service-header">
+          <div class="service-icon">🚀</div>
+          <h3>フル対応プラン</h3>
+          <p>制作＋AIチャット＋月次保守＋SEO対策まで。集客から運用まで丸ごとお任せいただけます。</p>
+        </div>
+        <div class="service-footer">
+          <span class="service-price">月¥15,000〜</span>
+          <div class="service-arrow" style="width:auto;padding:0 12px;border-radius:100px;font-size:13px;font-weight:700">詳細を見る →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODAL -->
+<div id="modalOverlay" onclick="closeModal()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:500;align-items:center;justify-content:center;padding:20px">
+  <div id="modalBox" onclick="event.stopPropagation()" style="background:white;border:2.5px solid var(--ink);border-radius:24px;box-shadow:8px 8px 0 var(--ink);max-width:580px;width:100%;max-height:88vh;overflow-y:auto;position:relative">
+    <button onclick="closeModal()" style="position:absolute;top:14px;right:14px;background:var(--ink);color:white;border:none;border-radius:50%;width:34px;height:34px;font-size:20px;cursor:pointer;line-height:34px;text-align:center;z-index:10">×</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+  </div>
+</section>
+
+<!-- WORKS -->
+<section class="section-works" id="works">
+  <div class="works-inner">
+    <div class="section-label">制作実績</div>
+    <h2 class="section-title">こんなサイトを<br>作っています🖥️</h2>
+
+    <!-- 上段 3枚 -->
+    <div class="works-grid">
+
+      <!-- ①ラーメン店 -->
+      <div class="work-card">
+        <div class="work-preview">
+          <svg viewBox="0 0 480 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <!-- 背景グラデ -->
+              <linearGradient id="ramenBg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#0a0602"/>
+                <stop offset="100%" stop-color="#130a04"/>
+              </linearGradient>
+              <!-- スープのグラデ -->
+              <radialGradient id="soupGrad" cx="50%" cy="30%" r="70%">
+                <stop offset="0%" stop-color="#8a3e18"/>
+                <stop offset="60%" stop-color="#5a2008"/>
+                <stop offset="100%" stop-color="#3a1204"/>
+              </radialGradient>
+              <!-- 丼のハイライト -->
+              <radialGradient id="bowlHighlight" cx="35%" cy="20%" r="60%">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity=".15"/>
+                <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+              </radialGradient>
+              <!-- 湯気グラデ -->
+              <linearGradient id="steamGrad" x1="0" y1="1" x2="0" y2="0">
+                <stop offset="0%" stop-color="rgba(255,220,170,.35)"/>
+                <stop offset="100%" stop-color="rgba(255,220,170,0)"/>
+              </linearGradient>
+              <!-- スープ面の光 -->
+              <radialGradient id="soupSheen" cx="40%" cy="40%" r="55%">
+                <stop offset="0%" stop-color="#c06030" stop-opacity=".8"/>
+                <stop offset="100%" stop-color="#3a1204" stop-opacity="0"/>
+              </radialGradient>
+              <!-- テキストオーバーレイ -->
+              <linearGradient id="overlayGrad" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="rgba(10,6,2,.95)"/>
+                <stop offset="70%" stop-color="rgba(10,6,2,.6)"/>
+                <stop offset="100%" stop-color="rgba(10,6,2,0)"/>
+              </linearGradient>
+              <!-- 丼外側シャドウ -->
+              <radialGradient id="bowlShadow" cx="50%" cy="100%" r="60%">
+                <stop offset="0%" stop-color="rgba(0,0,0,.7)"/>
+                <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+              </radialGradient>
+              <!-- チャーシュー脂身グラデ -->
+              <radialGradient id="chashuFat" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#f0d080"/>
+                <stop offset="100%" stop-color="#d4b040"/>
+              </radialGradient>
+            </defs>
+
+            <!-- 背景 -->
+            <rect width="480" height="300" fill="url(#ramenBg)"/>
+
+            <!-- 微細テクスチャ（薄いドット） -->
+            <rect width="480" height="300" fill="none" stroke="rgba(200,136,26,.04)" stroke-width="0"/>
+
+            <!-- 右上：和柄サークル装飾 -->
+            <circle cx="420" cy="50" r="80" fill="none" stroke="rgba(200,136,26,.06)" stroke-width="1"/>
+            <circle cx="420" cy="50" r="60" fill="none" stroke="rgba(200,136,26,.08)" stroke-width="1"/>
+            <circle cx="420" cy="50" r="40" fill="none" stroke="rgba(200,136,26,.1)" stroke-width="1"/>
+            <!-- 左下：同様 -->
+            <circle cx="50" cy="260" r="60" fill="none" stroke="rgba(200,136,26,.05)" stroke-width="1"/>
+            <circle cx="50" cy="260" r="40" fill="none" stroke="rgba(200,136,26,.07)" stroke-width="1"/>
+
+            <!-- ═══ ナビ ═══ -->
+            <rect width="480" height="44" fill="rgba(5,2,0,.92)"/>
+            <!-- ロゴ：KUROSマーク -->
+            <rect x="16" y="12" width="3" height="20" rx="1.5" fill="#c8881a"/>
+            <text x="26" y="30" font-family="serif" font-size="16" font-weight="bold" fill="white" letter-spacing=".04em">麺処</text>
+            <text x="72" y="30" font-family="serif" font-size="16" font-weight="bold" fill="#c8881a" letter-spacing=".08em">KUROS</text>
+            <!-- ナビリンク -->
+            <text x="248" y="27" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,.4)" letter-spacing=".06em">メニュー</text>
+            <text x="300" y="27" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,.4)" letter-spacing=".06em">こだわり</text>
+            <text x="354" y="27" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,.4)" letter-spacing=".06em">アクセス</text>
+            <!-- CTAボタン -->
+            <rect x="404" y="12" width="60" height="20" rx="10" fill="#c8881a"/>
+            <text x="434" y="26" font-size="8.5" fill="white" text-anchor="middle" font-family="sans-serif" font-weight="bold" letter-spacing=".04em">ご予約</text>
+
+            <!-- ═══ ヒーロー ═══ -->
+            <!-- 全面背景（暗い暖色） -->
+            <rect x="0" y="44" width="480" height="154" fill="#0e0804"/>
+
+            <!-- 右側：丼イラストエリア（暗めの背景） -->
+            <rect x="220" y="44" width="260" height="154" fill="#120a05"/>
+
+            <!-- テーブル面（斜め楕円シャドウ） -->
+            <ellipse cx="360" cy="196" rx="110" ry="14" fill="rgba(0,0,0,.6)"/>
+
+            <!-- ── 丼 本体 ──
+                 実際のラーメン丼を立体的に描画
+                 底から順に重ねる -->
+
+            <!-- 丼 底面（影） -->
+            <ellipse cx="358" cy="185" rx="84" ry="18" fill="#1a0a04"/>
+
+            <!-- 丼 外側 胴体 (陶器の質感) -->
+            <!-- 一番外側の縁 -->
+            <ellipse cx="358" cy="166" rx="86" ry="24" fill="#2a1608"/>
+            <!-- 胴体メイン -->
+            <path d="M274 166 Q274 196 358 196 Q442 196 442 166 Z" fill="#3a1e0c"/>
+            <!-- 胴体グラデ（ハイライト） -->
+            <path d="M274 166 Q274 196 358 196 Q442 196 442 166 Z" fill="url(#bowlHighlight)"/>
+
+            <!-- 丼 縁（リム） -->
+            <ellipse cx="358" cy="166" rx="86" ry="24" fill="#4a2814" stroke="#5a3018" stroke-width="1"/>
+            <!-- 縁の内側 -->
+            <ellipse cx="358" cy="166" rx="80" ry="20" fill="#2e1808"/>
+
+            <!-- ── スープ ── -->
+            <ellipse cx="358" cy="163" rx="78" ry="18" fill="url(#soupGrad)"/>
+            <!-- スープ光沢 -->
+            <ellipse cx="340" cy="158" rx="36" ry="9" fill="url(#soupSheen)" opacity=".7"/>
+            <!-- スープ反射ハイライト（細長い光） -->
+            <ellipse cx="332" cy="154" rx="18" ry="4" fill="rgba(255,200,100,.12)" transform="rotate(-15 332 154)"/>
+
+            <!-- ── 麺（ウェーブ状、スープの上に浮く） ── -->
+            <!-- 麺の塊（下地） -->
+            <ellipse cx="358" cy="156" rx="52" ry="12" fill="#d4a040" opacity=".3"/>
+            <!-- 麺の束1（太め） -->
+            <path d="M306 158 Q322 148 338 158 Q354 168 370 158 Q386 148 402 158 Q412 152 420 156" stroke="#e8c060" stroke-width="3" fill="none" opacity=".95" stroke-linecap="round"/>
+            <!-- 麺の束2 -->
+            <path d="M310 163 Q326 153 342 163 Q358 173 374 163 Q390 153 406 163 Q414 158 418 160" stroke="#d4aa48" stroke-width="2.5" fill="none" opacity=".8" stroke-linecap="round"/>
+            <!-- 麺の束3（薄め） -->
+            <path d="M316 169 Q330 160 346 169 Q362 178 378 169 Q394 160 408 167" stroke="#c09838" stroke-width="2" fill="none" opacity=".55" stroke-linecap="round"/>
+            <!-- 麺の束4（一番下） -->
+            <path d="M320 174 Q336 165 352 174 Q368 183 384 174 Q396 167 404 171" stroke="#b08828" stroke-width="1.5" fill="none" opacity=".35" stroke-linecap="round"/>
+
+            <!-- ── チャーシュー（3D感のある焼豚） ── -->
+            <!-- 影 -->
+            <ellipse cx="330" cy="156" rx="24" ry="8" fill="rgba(0,0,0,.4)"/>
+            <!-- 肉の外周（焦げた部分） -->
+            <ellipse cx="328" cy="150" rx="23" ry="10" fill="#3c1406"/>
+            <!-- 脂の層（外側） -->
+            <ellipse cx="328" cy="149" rx="20" ry="9" fill="#c08030"/>
+            <!-- 肉の本体 -->
+            <ellipse cx="328" cy="148" rx="17" ry="7.5" fill="#8a2e10"/>
+            <!-- 脂の渦巻き（中心に向かう） -->
+            <path d="M318 146 Q323 142 328 146 Q333 150 338 146" stroke="rgba(220,160,60,.5)" stroke-width="1.5" fill="none"/>
+            <path d="M321 148 Q325 144 328 148 Q331 152 335 148" stroke="rgba(200,140,50,.4)" stroke-width="1" fill="none"/>
+            <!-- 中心の脂身 -->
+            <ellipse cx="328" cy="147" rx="6" ry="3.5" fill="#d4a040" opacity=".7"/>
+            <!-- 焼き目（ブラウン斑点） -->
+            <ellipse cx="322" cy="145" rx="3" ry="2" fill="#6a1e08" opacity=".6"/>
+            <ellipse cx="335" cy="150" rx="2.5" ry="1.5" fill="#6a1e08" opacity=".5"/>
+            <!-- つやの光 -->
+            <ellipse cx="324" cy="144" rx="5" ry="2.5" fill="rgba(255,200,100,.2)" transform="rotate(-20 324 144)"/>
+
+            <!-- 2枚目チャーシュー（少しずれて重なり） -->
+            <ellipse cx="344" cy="148" rx="16" ry="7" fill="#5a1c0a" opacity=".8"/>
+            <ellipse cx="344" cy="147" rx="13" ry="6" fill="#7a2a10" opacity=".9"/>
+            <ellipse cx="344" cy="146" rx="7" ry="3.5" fill="#c09030" opacity=".6"/>
+            <ellipse cx="344" cy="145" rx="3" ry="2" fill="#d4a040" opacity=".5"/>
+
+            <!-- ── 半熟卵 ── -->
+            <!-- 卵の白身 -->
+            <ellipse cx="392" cy="154" rx="15" ry="13" fill="#f0ece4"/>
+            <!-- 卵の影側 -->
+            <ellipse cx="396" cy="158" rx="10" ry="8" fill="#d4cec4" opacity=".5"/>
+            <!-- 卵黄（外周） -->
+            <ellipse cx="389" cy="151" rx="9" ry="8" fill="#f0a824"/>
+            <!-- 卵黄グラデ（明るい中心） -->
+            <ellipse cx="387" cy="149" rx="6" ry="5.5" fill="#f8c040"/>
+            <ellipse cx="386" cy="148" rx="3.5" ry="3" fill="#ffd060"/>
+            <!-- 卵黄ハイライト -->
+            <ellipse cx="385" cy="147" rx="1.8" ry="1.5" fill="rgba(255,255,255,.5)"/>
+            <!-- 卵白の光 -->
+            <ellipse cx="396" cy="148" rx="3" ry="2" fill="rgba(255,255,255,.4)" transform="rotate(-20 396 148)"/>
+
+            <!-- ── メンマ ── -->
+            <rect x="368" y="147" width="14" height="6" rx="2" fill="#c8a058" transform="rotate(-15 368 147)"/>
+            <rect x="370" y="146" width="14" height="5" rx="2" fill="#d8b068" opacity=".8" transform="rotate(-15 370 146)"/>
+            <!-- メンマの縦線テクスチャ -->
+            <line x1="370" y1="148" x2="372" y2="152" stroke="rgba(100,70,20,.5)" stroke-width=".8" transform="rotate(-15 370 148)"/>
+            <line x1="374" y1="148" x2="376" y2="152" stroke="rgba(100,70,20,.5)" stroke-width=".8" transform="rotate(-15 374 148)"/>
+            <line x1="378" y1="148" x2="380" y2="152" stroke="rgba(100,70,20,.5)" stroke-width=".8" transform="rotate(-15 378 148)"/>
+
+            <!-- ── ネギ（小口切り） ── -->
+            <!-- ネギの茎 -->
+            <g transform="rotate(-18 304 144)">
+              <rect x="302" y="136" width="4" height="22" rx="2" fill="#7ac870"/>
+              <rect x="303.5" y="136" width="1" height="22" rx=".5" fill="rgba(255,255,255,.2)"/>
+            </g>
+            <g transform="rotate(-10 316 140)">
+              <rect x="314" y="132" width="4" height="24" rx="2" fill="#68b860"/>
+              <rect x="315.5" y="132" width="1" height="24" rx=".5" fill="rgba(255,255,255,.2)"/>
+            </g>
+            <g transform="rotate(-4 326 137)">
+              <rect x="324" y="130" width="3.5" height="20" rx="1.75" fill="#7ac870"/>
+            </g>
+            <!-- ネギの輪切り -->
+            <circle cx="305" cy="156" r="3" fill="rgba(120,200,120,.6)" stroke="#5a9850" stroke-width=".5"/>
+            <circle cx="305" cy="156" r="1.5" fill="rgba(200,240,200,.4)"/>
+            <circle cx="318" cy="154" r="2.5" fill="rgba(120,200,120,.55)" stroke="#5a9850" stroke-width=".5"/>
+            <circle cx="326" cy="152" r="2" fill="rgba(120,200,120,.5)"/>
+
+            <!-- ── 海苔 ── -->
+            <rect x="408" y="140" width="10" height="22" rx="1" fill="#1a2808" transform="rotate(5 408 140)"/>
+            <rect x="409" y="141" width="8" height="20" rx="1" fill="#243410" opacity=".8" transform="rotate(5 409 141)"/>
+            <!-- 海苔の光沢 -->
+            <rect x="411" y="143" width="2" height="12" rx="1" fill="rgba(100,200,80,.15)" transform="rotate(5 411 143)"/>
+
+            <!-- 丼の縁の内側の白いライン（陶器のツヤ） -->
+            <ellipse cx="358" cy="162" rx="76" ry="18" fill="none" stroke="rgba(255,255,255,.04)" stroke-width="1.5"/>
+
+            <!-- ── 湯気 ── -->
+            <path d="M330 130 Q334 118 328 106 Q322 94 326 82" stroke="url(#steamGrad)" stroke-width="3.5" fill="none" stroke-linecap="round" opacity=".6"/>
+            <path d="M352 126 Q356 114 350 102 Q344 90 348 78" stroke="url(#steamGrad)" stroke-width="3" fill="none" stroke-linecap="round" opacity=".5"/>
+            <path d="M374 130 Q378 118 372 106 Q366 94 370 82" stroke="url(#steamGrad)" stroke-width="3.5" fill="none" stroke-linecap="round" opacity=".55"/>
+            <path d="M394 134 Q398 124 393 114 Q388 104 392 94" stroke="url(#steamGrad)" stroke-width="2.5" fill="none" stroke-linecap="round" opacity=".4"/>
+
+            <!-- ═══ 左テキストオーバーレイ ═══ -->
+            <rect x="0" y="44" width="260" height="154" fill="url(#overlayGrad)"/>
+
+            <!-- タグライン -->
+            <rect x="18" y="58" width="3" height="14" rx="1.5" fill="#c8881a"/>
+            <text x="28" y="68" font-family="sans-serif" font-size="8" fill="#c8881a" letter-spacing=".18em">ARTISAN RAMEN · 名古屋</text>
+
+            <!-- メインコピー -->
+            <text x="18" y="97" font-family="serif" font-size="26" font-weight="bold" fill="white">骨を、</text>
+            <text x="18" y="127" font-family="serif" font-size="26" font-weight="bold" fill="white">煮込んだ。</text>
+
+            <!-- サブコピー -->
+            <text x="18" y="150" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,.5)">12時間炊き出す、本物のスープ。</text>
+
+            <!-- ボタン2つ -->
+            <rect x="18" y="162" width="90" height="24" rx="12" fill="#c8881a"/>
+            <text x="63" y="178" font-size="9" fill="white" text-anchor="middle" font-family="sans-serif" font-weight="bold">メニューを見る</text>
+            <rect x="116" y="162" width="88" height="24" rx="12" fill="none" stroke="rgba(200,136,26,.45)" stroke-width="1.5"/>
+            <text x="160" y="178" font-size="9" fill="rgba(200,136,26,.9)" text-anchor="middle" font-family="sans-serif">ご予約</text>
+
+            <!-- ═══ 下部カード帯 ═══ -->
+            <rect y="198" width="480" height="102" fill="#0c0805"/>
+            <rect y="198" width="480" height="1" fill="rgba(200,136,26,.2)"/>
+
+            <!-- セクションラベル -->
+            <text x="18" y="216" font-family="sans-serif" font-size="8.5" fill="rgba(200,136,26,.7)" letter-spacing=".12em">POPULAR MENU</text>
+
+            <!-- カード1 -->
+            <rect x="14" y="224" width="138" height="66" rx="10" fill="rgba(255,255,255,.03)" stroke="rgba(200,136,26,.2)" stroke-width="1"/>
+            <rect x="14" y="224" width="138" height="66" rx="10" fill="none" stroke="rgba(200,136,26,.15)" stroke-width="1"/>
+            <!-- 左側カラーバー -->
+            <rect x="14" y="224" width="3" height="66" rx="1.5" fill="#c8881a"/>
+            <text x="28" y="242" font-size="9.5" font-weight="bold" fill="rgba(255,255,255,.9)" font-family="sans-serif">特製醤油らーめん</text>
+            <text x="28" y="256" font-size="13" font-weight="bold" fill="#c8881a" font-family="sans-serif">¥830</text>
+            <rect x="28" y="264" width="88" height="4" rx="2" fill="rgba(255,255,255,.08)"/>
+            <rect x="28" y="272" width="64" height="4" rx="2" fill="rgba(255,255,255,.06)"/>
+
+            <!-- カード2 -->
+            <rect x="162" y="224" width="138" height="66" rx="10" fill="rgba(255,255,255,.03)" stroke="rgba(200,136,26,.2)" stroke-width="1"/>
+            <rect x="162" y="224" width="3" height="66" rx="1.5" fill="#e05030"/>
+            <text x="176" y="242" font-size="9.5" font-weight="bold" fill="rgba(255,255,255,.9)" font-family="sans-serif">辛味噌らーめん</text>
+            <text x="176" y="256" font-size="13" font-weight="bold" fill="#c8881a" font-family="sans-serif">¥880</text>
+            <rect x="176" y="264" width="88" height="4" rx="2" fill="rgba(255,255,255,.08)"/>
+            <rect x="176" y="272" width="64" height="4" rx="2" fill="rgba(255,255,255,.06)"/>
+
+            <!-- AIチャットカード -->
+            <rect x="310" y="224" width="156" height="66" rx="10" fill="rgba(200,136,26,.06)" stroke="rgba(200,136,26,.35)" stroke-width="1"/>
+            <text x="322" y="242" font-size="9" fill="#c8881a" font-weight="bold" font-family="sans-serif" letter-spacing=".04em">🤖 AI スタッフ 常駐</text>
+            <rect x="318" y="250" width="96" height="4" rx="2" fill="rgba(200,136,26,.2)"/>
+            <rect x="318" y="258" width="72" height="4" rx="2" fill="rgba(200,136,26,.15)"/>
+            <rect x="318" y="266" width="84" height="4" rx="2" fill="rgba(200,136,26,.12)"/>
+            <!-- チャットアイコン -->
+            <circle cx="446" cy="256" r="13" fill="#c8881a"/>
+            <text x="446" y="261" font-size="13" text-anchor="middle" fill="white">💬</text>
+          </svg>
+        </div>
+        <div class="work-info">
+          <span class="work-tag" style="background:#fff3e0;color:#c8881a;border-color:#c8881a">🍜 飲食店</span>
+          <h3>麺処 KUROS</h3>
+          <p>深みのあるダークトーンとゴールドでブランドを表現。チャーシュー・半熟卵・麺を立体的に描いたビジュアルが食欲をそそる。AIが24時間対応。</p>
+          <div class="work-badges">
+            <span class="work-badge">AIチャット</span>
+            <span class="work-badge">スマホ対応</span>
+            <span class="work-badge">予約機能</span>
+            <span class="work-badge">メニュー管理</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ②美容室 -->
+      <div class="work-card">
+        <div class="work-preview">
+          <svg viewBox="0 0 480 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <linearGradient id="salonBg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#fff0f6"/>
+                <stop offset="100%" stop-color="#fde8ee"/>
+              </linearGradient>
+              <radialGradient id="salonCircle" cx="50%" cy="40%" r="60%">
+                <stop offset="0%" stop-color="#f8b8cc" stop-opacity=".5"/>
+                <stop offset="100%" stop-color="#fde8ee" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <rect width="480" height="300" fill="url(#salonBg)"/>
+            <!-- ナビ -->
+            <rect width="480" height="48" fill="rgba(255,255,255,.95)"/>
+            <text x="22" y="28" font-family="serif" font-size="17" font-weight="bold" fill="#c03060">Salon Hana</text>
+            <text x="22" y="41" font-family="sans-serif" font-size="7.5" fill="#d8a0b8" letter-spacing="2">NATURAL BEAUTY SALON</text>
+            <rect x="296" y="17" width="34" height="12" rx="3" fill="#f8d8e4"/>
+            <rect x="338" y="17" width="34" height="12" rx="3" fill="#f8d8e4"/>
+            <rect x="380" y="17" width="34" height="12" rx="3" fill="#f8d8e4"/>
+            <rect x="424" y="15" width="40" height="16" rx="8" fill="#c03060"/>
+            <text x="444" y="26" font-size="8" fill="white" text-anchor="middle" font-family="sans-serif">予約する</text>
+            <!-- ヒーロー 2分割 -->
+            <rect x="0" y="48" width="236" height="148" fill="rgba(255,255,255,.75)"/>
+            <rect x="236" y="48" width="244" height="148" fill="#f8ccd8"/>
+            <!-- 右：雰囲気イメージ -->
+            <ellipse cx="358" cy="122" rx="65" ry="78" fill="url(#salonCircle)"/>
+            <ellipse cx="358" cy="88" rx="38" ry="38" fill="#e890ac" opacity=".5"/>
+            <!-- 人物シルエット -->
+            <ellipse cx="358" cy="76" rx="20" ry="21" fill="#c06078"/>
+            <path d="M326 162 Q358 134 390 162 L392 176 L324 176Z" fill="#c06078" opacity=".6"/>
+            <!-- 花1 -->
+            <g transform="translate(280,65)">
+              <circle r="5" fill="#ff9eb5" opacity=".8"/>
+              <circle cx="7" r="4" fill="#ffb6c8" opacity=".6"/>
+              <circle cx="-7" r="4" fill="#ff9eb5" opacity=".6"/>
+              <circle cy="7" r="4" fill="#ffb6c8" opacity=".5"/>
+              <circle cy="-7" r="4" fill="#ff9eb5" opacity=".5"/>
+            </g>
+            <!-- 花2 -->
+            <g transform="translate(430,76)">
+              <circle r="4" fill="#ffb6c8" opacity=".7"/>
+              <circle cx="6" r="3" fill="#ff9eb5" opacity=".55"/>
+              <circle cx="-6" r="3" fill="#ffb6c8" opacity=".55"/>
+              <circle cy="6" r="3" fill="#ff9eb5" opacity=".45"/>
+              <circle cy="-6" r="3" fill="#ffb6c8" opacity=".45"/>
+            </g>
+            <!-- 左テキスト -->
+            <text x="20" y="80" font-size="8" fill="#c03060" font-family="sans-serif" letter-spacing="2">NATURAL BEAUTY</text>
+            <text x="20" y="106" font-size="20" font-weight="bold" fill="#2a0818" font-family="serif">あなたらしい</text>
+            <text x="20" y="130" font-size="20" font-weight="bold" fill="#2a0818" font-family="serif">美しさへ。</text>
+            <text x="20" y="150" font-size="9" fill="#b090a0" font-family="sans-serif">名古屋市中区｜完全予約制</text>
+            <rect x="20" y="162" width="86" height="24" rx="12" fill="#c03060"/>
+            <text x="63" y="177" font-size="9" fill="white" text-anchor="middle" font-family="sans-serif">無料相談する</text>
+            <rect x="116" y="162" width="86" height="24" rx="12" fill="none" stroke="#c03060" stroke-width="1.5"/>
+            <text x="159" y="177" font-size="9" fill="#c03060" text-anchor="middle" font-family="sans-serif">メニュー一覧</text>
+            <!-- 下部メニューカード -->
+            <rect y="196" width="480" height="104" fill="white"/>
+            <text x="20" y="216" font-size="11" font-weight="bold" fill="#2a0818" font-family="sans-serif">メニュー &amp; 料金</text>
+            <!-- カード -->
+            <rect x="14" y="224" width="104" height="64" rx="10" fill="#fff0f5" stroke="#f8d8e4" stroke-width="1.5"/>
+            <text x="66" y="246" font-size="13" text-anchor="middle">✂️</text>
+            <text x="66" y="260" font-size="10" font-weight="bold" fill="#2a0818" text-anchor="middle" font-family="sans-serif">カット</text>
+            <text x="66" y="275" font-size="9" fill="#c03060" text-anchor="middle" font-family="sans-serif">¥3,800〜</text>
+            <rect x="126" y="224" width="104" height="64" rx="10" fill="#fff0f5" stroke="#f8d8e4" stroke-width="1.5"/>
+            <text x="178" y="246" font-size="13" text-anchor="middle">🎨</text>
+            <text x="178" y="260" font-size="10" font-weight="bold" fill="#2a0818" text-anchor="middle" font-family="sans-serif">カラー</text>
+            <text x="178" y="275" font-size="9" fill="#c03060" text-anchor="middle" font-family="sans-serif">¥6,500〜</text>
+            <rect x="238" y="224" width="104" height="64" rx="10" fill="#fff0f5" stroke="#f8d8e4" stroke-width="1.5"/>
+            <text x="290" y="246" font-size="13" text-anchor="middle">💫</text>
+            <text x="290" y="260" font-size="10" font-weight="bold" fill="#2a0818" text-anchor="middle" font-family="sans-serif">パーマ</text>
+            <text x="290" y="275" font-size="9" fill="#c03060" text-anchor="middle" font-family="sans-serif">¥8,000〜</text>
+            <!-- AIチャットカード -->
+            <rect x="350" y="224" width="116" height="64" rx="10" fill="#fff0f5" stroke="#c03060" stroke-width="1.5"/>
+            <text x="408" y="244" font-size="10" fill="#c03060" text-anchor="middle" font-weight="bold" font-family="sans-serif">🌸 AIスタッフ</text>
+            <rect x="360" y="252" width="72" height="6" rx="2" fill="#f8d8e4"/>
+            <rect x="360" y="262" width="56" height="6" rx="2" fill="#f8d8e4"/>
+            <text x="408" y="282" font-size="8" fill="#c090a8" text-anchor="middle" font-family="sans-serif">24h自動対応 ●</text>
+          </svg>
+        </div>
+        <div class="work-info">
+          <span class="work-tag" style="background:#fff0f5;color:#c03060;border-color:#c03060">💇 美容室</span>
+          <h3>Salon Hana</h3>
+          <p>上品なピンクでブランドを統一。AIスタッフが料金案内・予約受付・よくある質問を24時間対応。</p>
+          <div class="work-badges">
+            <span class="work-badge">AIチャット</span>
+            <span class="work-badge">料金表</span>
+            <span class="work-badge">完全予約制</span>
+            <span class="work-badge">SEO対応</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ③整体院 -->
+      <div class="work-card">
+        <div class="work-preview">
+          <svg viewBox="0 0 480 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <linearGradient id="seitaiHero" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#071c10"/>
+                <stop offset="100%" stop-color="#0d2a18"/>
+              </linearGradient>
+            </defs>
+            <rect width="480" height="300" fill="#f2f9f4"/>
+            <!-- ナビ (ダーク) -->
+            <rect width="480" height="46" fill="#0d2a18"/>
+            <text x="22" y="29" font-family="serif" font-size="15" font-weight="bold" fill="white">からだ整体院</text>
+            <rect x="290" y="16" width="30" height="12" rx="3" fill="rgba(255,255,255,.12)"/>
+            <rect x="328" y="16" width="30" height="12" rx="3" fill="rgba(255,255,255,.12)"/>
+            <rect x="366" y="16" width="30" height="12" rx="3" fill="rgba(255,255,255,.12)"/>
+            <rect x="406" y="14" width="58" height="16" rx="8" fill="#3dda7a"/>
+            <text x="435" y="25" font-size="8.5" fill="#071c10" text-anchor="middle" font-weight="bold" font-family="sans-serif">今すぐ予約</text>
+            <!-- キービジュアル帯 -->
+            <rect y="46" width="480" height="136" fill="url(#seitaiHero)"/>
+            <!-- 葉っぱ装飾 左 -->
+            <ellipse cx="42" cy="88" rx="44" ry="18" fill="#184028" opacity=".7" transform="rotate(-28 42 88)"/>
+            <ellipse cx="56" cy="110" rx="54" ry="16" fill="#184028" opacity=".5" transform="rotate(20 56 110)"/>
+            <ellipse cx="36" cy="128" rx="40" ry="14" fill="#184028" opacity=".4" transform="rotate(-10 36 128)"/>
+            <!-- 葉っぱ装飾 右 -->
+            <ellipse cx="438" cy="80" rx="44" ry="18" fill="#184028" opacity=".65" transform="rotate(28 438 80)"/>
+            <ellipse cx="450" cy="108" rx="50" ry="15" fill="#184028" opacity=".45" transform="rotate(-18 450 108)"/>
+            <!-- 中央テキスト -->
+            <text x="240" y="86" font-family="sans-serif" font-size="8.5" fill="#3dda7a" text-anchor="middle" letter-spacing="4">NATURAL THERAPY</text>
+            <text x="240" y="114" font-family="serif" font-size="21" font-weight="bold" fill="white" text-anchor="middle">体の芯から、整える。</text>
+            <text x="240" y="135" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,.5)" text-anchor="middle">名古屋市千種区｜完全個室｜駐車場完備</text>
+            <!-- ボタン -->
+            <rect x="144" y="148" width="104" height="24" rx="12" fill="#3dda7a"/>
+            <text x="196" y="163" font-size="9.5" fill="#071c10" text-anchor="middle" font-weight="bold" font-family="sans-serif">無料相談する</text>
+            <rect x="258" y="148" width="104" height="24" rx="12" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="1.5"/>
+            <text x="310" y="163" font-size="9.5" fill="white" text-anchor="middle" font-family="sans-serif">施術メニュー</text>
+            <!-- AIバッジ -->
+            <rect x="330" y="52" width="88" height="22" rx="11" fill="rgba(61,218,122,.1)" stroke="rgba(61,218,122,.4)" stroke-width="1"/>
+            <text x="374" y="66" font-size="8" fill="#3dda7a" text-anchor="middle" font-family="sans-serif">🤖 AI対応中</text>
+            <!-- 下部お悩みセクション -->
+            <rect y="182" width="480" height="118" fill="white"/>
+            <text x="240" y="204" font-size="10.5" font-weight="bold" fill="#0d2a18" text-anchor="middle" font-family="sans-serif">こんなお悩みはありませんか？</text>
+            <!-- カード3枚 -->
+            <rect x="14" y="212" width="140" height="74" rx="12" fill="#f2fbf5" stroke="#b8e8c8" stroke-width="1.5"/>
+            <text x="84" y="236" font-size="18" text-anchor="middle">🦴</text>
+            <text x="84" y="252" font-size="10" font-weight="bold" fill="#0d2a18" text-anchor="middle" font-family="sans-serif">腰・肩の痛み</text>
+            <rect x="24" y="260" width="100" height="5" rx="2" fill="#c8e8d0"/>
+            <rect x="24" y="270" width="76" height="5" rx="2" fill="#c8e8d0"/>
+            <rect x="170" y="212" width="140" height="74" rx="12" fill="#f2fbf5" stroke="#b8e8c8" stroke-width="1.5"/>
+            <text x="240" y="236" font-size="18" text-anchor="middle">😴</text>
+            <text x="240" y="252" font-size="10" font-weight="bold" fill="#0d2a18" text-anchor="middle" font-family="sans-serif">疲れ・だるさ</text>
+            <rect x="180" y="260" width="100" height="5" rx="2" fill="#c8e8d0"/>
+            <rect x="180" y="270" width="76" height="5" rx="2" fill="#c8e8d0"/>
+            <rect x="326" y="212" width="140" height="74" rx="12" fill="#f2fbf5" stroke="#b8e8c8" stroke-width="1.5"/>
+            <text x="396" y="236" font-size="18" text-anchor="middle">🧘</text>
+            <text x="396" y="252" font-size="10" font-weight="bold" fill="#0d2a18" text-anchor="middle" font-family="sans-serif">姿勢・ゆがみ</text>
+            <rect x="336" y="260" width="100" height="5" rx="2" fill="#c8e8d0"/>
+            <rect x="336" y="270" width="76" height="5" rx="2" fill="#c8e8d0"/>
+          </svg>
+        </div>
+        <div class="work-info">
+          <span class="work-tag" style="background:#f0fff4;color:#16a34a;border-color:#3dda7a">💆 整体院</span>
+          <h3>からだ整体院</h3>
+          <p>深いグリーンで安心感・信頼感を演出。AIが症状別に施術内容を案内し、予約まで自動でサポート。</p>
+          <div class="work-badges">
+            <span class="work-badge">AIチャット</span>
+            <span class="work-badge">お悩み別案内</span>
+            <span class="work-badge">完全個室対応</span>
+            <span class="work-badge">予約受付</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /works-grid -->
+
+    <!-- 下段 2枚（ワイド） -->
+    <div class="works-grid-bottom">
+
+      <!-- ④不動産 -->
+      <div class="work-card">
+        <div class="work-preview">
+          <svg viewBox="0 0 480 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <linearGradient id="reBg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#0f1e38"/>
+                <stop offset="100%" stop-color="#162444"/>
+              </linearGradient>
+              <linearGradient id="reSky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#1a3a6a"/>
+                <stop offset="100%" stop-color="#2a5090"/>
+              </linearGradient>
+            </defs>
+            <rect width="480" height="300" fill="url(#reBg)"/>
+            <!-- ナビ -->
+            <rect width="480" height="46" fill="rgba(15,30,56,.95)"/>
+            <text x="22" y="30" font-family="sans-serif" font-size="15" font-weight="bold" fill="white" letter-spacing=".02em">NEXUS不動産</text>
+            <rect x="290" y="16" width="32" height="12" rx="3" fill="rgba(255,255,255,.1)"/>
+            <rect x="330" y="16" width="32" height="12" rx="3" fill="rgba(255,255,255,.1)"/>
+            <rect x="370" y="16" width="32" height="12" rx="3" fill="rgba(255,255,255,.1)"/>
+            <rect x="414" y="14" width="50" height="16" rx="8" fill="#FF8C42"/>
+            <text x="439" y="25" font-size="8.5" fill="white" text-anchor="middle" font-family="sans-serif" font-weight="bold">物件を探す</text>
+            <!-- 空 -->
+            <rect x="0" y="46" width="480" height="100" fill="url(#reSky)"/>
+            <!-- 星 -->
+            <circle cx="60" cy="60" r="1.2" fill="white" opacity=".6"/>
+            <circle cx="130" cy="55" r="1" fill="white" opacity=".5"/>
+            <circle cx="200" cy="65" r="1.5" fill="white" opacity=".7"/>
+            <circle cx="280" cy="58" r="1" fill="white" opacity=".45"/>
+            <circle cx="360" cy="63" r="1.2" fill="white" opacity=".6"/>
+            <circle cx="430" cy="56" r="1" fill="white" opacity=".5"/>
+            <!-- 月 -->
+            <circle cx="440" cy="68" r="14" fill="#ffe08a"/>
+            <circle cx="447" cy="63" r="11" fill="url(#reSky)"/>
+            <!-- ビル群シルエット -->
+            <rect x="30" y="90" width="28" height="56" fill="#0f2040"/>
+            <rect x="25" y="100" width="6" height="46" fill="#0a1830"/>
+            <rect x="60" y="78" width="20" height="68" fill="#0f2040"/>
+            <rect x="82" y="95" width="24" height="51" fill="#0d1e38"/>
+            <rect x="108" y="70" width="32" height="76" fill="#0f2040"/>
+            <!-- ビル窓 -->
+            <rect x="113" y="76" width="6" height="6" rx="1" fill="#ffe566" opacity=".7"/>
+            <rect x="125" y="76" width="6" height="6" rx="1" fill="rgba(255,255,255,.2)"/>
+            <rect x="113" y="88" width="6" height="6" rx="1" fill="rgba(255,255,255,.2)"/>
+            <rect x="125" y="88" width="6" height="6" rx="1" fill="#ffe566" opacity=".5"/>
+            <rect x="63" y="84" width="5" height="5" rx="1" fill="#ffe566" opacity=".6"/>
+            <rect x="63" y="94" width="5" height="5" rx="1" fill="rgba(255,255,255,.2)"/>
+            <!-- メインビル（大） -->
+            <rect x="280" y="55" width="180" height="91" fill="#0d1e38"/>
+            <!-- ガラス窓グリッド -->
+            <rect x="288" y="64" width="22" height="16" rx="2" fill="#2a5080" opacity=".8"/>
+            <rect x="316" y="64" width="22" height="16" rx="2" fill="#3a6090" opacity=".6"/>
+            <rect x="344" y="64" width="22" height="16" rx="2" fill="#ffe566" opacity=".35"/>
+            <rect x="372" y="64" width="22" height="16" rx="2" fill="#2a5080" opacity=".8"/>
+            <rect x="400" y="64" width="22" height="16" rx="2" fill="#3a6090" opacity=".6"/>
+            <rect x="428" y="64" width="22" height="16" rx="2" fill="#2a5080" opacity=".7"/>
+            <rect x="288" y="86" width="22" height="16" rx="2" fill="#3a6090" opacity=".6"/>
+            <rect x="316" y="86" width="22" height="16" rx="2" fill="#ffe566" opacity=".4"/>
+            <rect x="344" y="86" width="22" height="16" rx="2" fill="#2a5080" opacity=".8"/>
+            <rect x="372" y="86" width="22" height="16" rx="2" fill="#ffe566" opacity=".3"/>
+            <rect x="400" y="86" width="22" height="16" rx="2" fill="#3a6090" opacity=".7"/>
+            <rect x="428" y="86" width="22" height="16" rx="2" fill="#ffe566" opacity=".4"/>
+            <rect x="288" y="108" width="22" height="16" rx="2" fill="#ffe566" opacity=".3"/>
+            <rect x="316" y="108" width="22" height="16" rx="2" fill="#2a5080" opacity=".7"/>
+            <rect x="344" y="108" width="22" height="16" rx="2" fill="#3a6090" opacity=".6"/>
+            <rect x="372" y="108" width="22" height="16" rx="2" fill="#2a5080" opacity=".8"/>
+            <rect x="400" y="108" width="22" height="16" rx="2" fill="#ffe566" opacity=".35"/>
+            <rect x="428" y="108" width="22" height="16" rx="2" fill="#3a6090" opacity=".5"/>
+            <!-- 地面 -->
+            <rect y="146" width="480" height="6" fill="#0a1428"/>
+            <!-- テキストオーバーレイ左 -->
+            <rect x="0" y="46" width="272" height="106" fill="rgba(10,16,32,.5)"/>
+            <text x="22" y="78" font-family="sans-serif" font-size="8.5" fill="#FF8C42" letter-spacing="3">PREMIUM ESTATE</text>
+            <text x="22" y="104" font-family="sans-serif" font-size="22" font-weight="bold" fill="white">あなたの理想の</text>
+            <text x="22" y="130" font-family="sans-serif" font-size="22" font-weight="bold" fill="white">家を一緒に探そう</text>
+            <rect x="22" y="138" width="88" height="8" rx="2" fill="rgba(255,255,255,.1)"/>
+            <!-- 物件カード帯 -->
+            <rect y="152" width="480" height="148" fill="#f0f4f8"/>
+            <text x="20" y="174" font-size="11" font-weight="bold" fill="#0f1e38" font-family="sans-serif">おすすめ物件</text>
+            <!-- 物件カード1 -->
+            <rect x="14" y="182" width="138" height="106" rx="12" fill="white" stroke="#d8e4f0" stroke-width="1.5"/>
+            <rect x="14" y="182" width="138" height="52" rx="12" fill="#d4e4f4"/>
+            <rect x="14" y="210" width="138" height="24" rx="0" fill="#d4e4f4"/>
+            <text x="32" y="200" font-size="18" fill="rgba(255,255,255,.6)" text-anchor="start">🏠</text>
+            <text x="83" y="218" font-size="8" fill="rgba(80,100,130,.8)" text-anchor="middle" font-family="sans-serif">2LDK | 65m²</text>
+            <text x="22" y="250" font-size="10" font-weight="bold" fill="#0f1e38" font-family="sans-serif">月額 ¥78,000</text>
+            <rect x="20" y="257" width="100" height="5" rx="2" fill="#e0e8f4"/>
+            <rect x="20" y="266" width="76" height="5" rx="2" fill="#e0e8f4"/>
+            <rect x="20" y="275" width="56" height="10" rx="5" fill="#FF8C42"/>
+            <text x="48" y="283" font-size="7.5" fill="white" text-anchor="middle" font-family="sans-serif">詳細を見る</text>
+            <!-- 物件カード2 -->
+            <rect x="162" y="182" width="138" height="106" rx="12" fill="white" stroke="#d8e4f0" stroke-width="1.5"/>
+            <rect x="162" y="182" width="138" height="52" rx="12" fill="#c8d8ee"/>
+            <rect x="162" y="210" width="138" height="24" rx="0" fill="#c8d8ee"/>
+            <text x="180" y="200" font-size="18" fill="rgba(255,255,255,.55)" text-anchor="start">🏢</text>
+            <text x="231" y="218" font-size="8" fill="rgba(80,100,130,.8)" text-anchor="middle" font-family="sans-serif">1K | 32m²</text>
+            <text x="170" y="250" font-size="10" font-weight="bold" fill="#0f1e38" font-family="sans-serif">月額 ¥52,000</text>
+            <rect x="168" y="257" width="100" height="5" rx="2" fill="#e0e8f4"/>
+            <rect x="168" y="266" width="76" height="5" rx="2" fill="#e0e8f4"/>
+            <rect x="168" y="275" width="56" height="10" rx="5" fill="#FF8C42"/>
+            <text x="196" y="283" font-size="7.5" fill="white" text-anchor="middle" font-family="sans-serif">詳細を見る</text>
+            <!-- 物件カード3 -->
+            <rect x="310" y="182" width="156" height="106" rx="12" fill="white" stroke="#d8e4f0" stroke-width="1.5"/>
+            <rect x="310" y="182" width="156" height="52" rx="12" fill="#b8cee8"/>
+            <rect x="310" y="210" width="156" height="24" rx="0" fill="#b8cee8"/>
+            <!-- AIチャット特集 -->
+            <text x="388" y="200" font-size="9" fill="#0f1e38" text-anchor="middle" font-weight="bold" font-family="sans-serif">🤖 物件相談AI</text>
+            <text x="388" y="215" font-size="8" fill="rgba(15,30,56,.7)" text-anchor="middle" font-family="sans-serif">チャットで探す</text>
+            <rect x="320" y="242" width="134" height="6" rx="2" fill="#d8e4f4"/>
+            <rect x="320" y="252" width="100" height="6" rx="2" fill="#d8e4f4"/>
+            <rect x="320" y="262" width="118" height="6" rx="2" fill="#d8e4f4"/>
+            <rect x="320" y="275" width="60" height="10" rx="5" fill="#0f1e38"/>
+            <text x="350" y="283" font-size="7.5" fill="white" text-anchor="middle" font-family="sans-serif">AI相談を始める</text>
+          </svg>
+        </div>
+        <div class="work-info">
+          <span class="work-tag" style="background:#fff4ee;color:#d4621a;border-color:#FF8C42">🏠 不動産</span>
+          <h3>NEXUS不動産</h3>
+          <p>ネイビー×オレンジの高級感あるデザイン。物件の条件をAIが自然な会話でヒアリング。「3LDKで駐車場付き」のような曖昧な相談も対応。</p>
+          <div class="work-badges">
+            <span class="work-badge">AI物件相談</span>
+            <span class="work-badge">物件掲載</span>
+            <span class="work-badge">問い合わせ管理</span>
+            <span class="work-badge">地図連携</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ⑤カフェ -->
+      <div class="work-card">
+        <div class="work-preview">
+          <svg viewBox="0 0 480 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <linearGradient id="cafeBg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#fdf6ee"/>
+                <stop offset="100%" stop-color="#f5ede0"/>
+              </linearGradient>
+              <radialGradient id="cupGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#c8783a" stop-opacity=".25"/>
+                <stop offset="100%" stop-color="#f5ede0" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <rect width="480" height="300" fill="url(#cafeBg)"/>
+            <!-- ナビ（ナチュラル木調） -->
+            <rect width="480" height="48" fill="#3a2010"/>
+            <text x="22" y="28" font-family="serif" font-size="16" font-weight="bold" fill="#f5e0c0">Café Moana</text>
+            <text x="22" y="41" font-family="sans-serif" font-size="7.5" fill="rgba(245,224,192,.45)" letter-spacing="2">ORGANIC · SLOW COFFEE</text>
+            <rect x="290" y="16" width="30" height="12" rx="3" fill="rgba(255,255,255,.1)"/>
+            <rect x="328" y="16" width="30" height="12" rx="3" fill="rgba(255,255,255,.1)"/>
+            <rect x="366" y="16" width="30" height="12" rx="3" fill="rgba(255,255,255,.1)"/>
+            <rect x="408" y="14" width="56" height="18" rx="9" fill="#c8783a"/>
+            <text x="436" y="26" font-size="8.5" fill="white" text-anchor="middle" font-family="sans-serif" font-weight="bold">来店予約</text>
+            <!-- ヒーロー 左右分割 -->
+            <rect x="0" y="48" width="230" height="140" fill="rgba(255,250,242,.85)"/>
+            <rect x="230" y="48" width="250" height="140" fill="#e8d0b0"/>
+            <!-- 右側：コーヒーカップイラスト -->
+            <!-- テーブル面 -->
+            <ellipse cx="355" cy="175" rx="90" ry="16" fill="#c8a870" opacity=".4"/>
+            <!-- ソーサー -->
+            <ellipse cx="355" cy="170" rx="52" ry="10" fill="#d4b47a"/>
+            <ellipse cx="355" cy="168" rx="48" ry="8" fill="#e0c090"/>
+            <!-- カップ本体 -->
+            <rect x="318" y="120" width="74" height="52" rx="10" fill="#f0e0c8"/>
+            <rect x="320" y="122" width="70" height="48" rx="8" fill="#f5e8d4"/>
+            <!-- カップ取っ手 -->
+            <path d="M392 130 Q418 130 418 146 Q418 162 392 162" stroke="#e0c090" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <!-- コーヒー液面 -->
+            <ellipse cx="355" cy="130" rx="30" ry="12" fill="#6a3810"/>
+            <ellipse cx="355" cy="128" rx="28" ry="10" fill="#7a4418"/>
+            <!-- ラテアート（ハート） -->
+            <path d="M355 138 Q348 128 355 124 Q362 128 355 138Z" fill="#c87040" opacity=".7"/>
+            <path d="M350 127 Q347 122 352 120 Q355 123 350 127Z" fill="#c87040" opacity=".7"/>
+            <path d="M360 127 Q363 122 358 120 Q355 123 360 127Z" fill="#c87040" opacity=".7"/>
+            <!-- 湯気 -->
+            <path d="M340 118 Q344 108 340 98" stroke="rgba(160,100,60,.3)" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path d="M355 114 Q359 104 355 94" stroke="rgba(160,100,60,.3)" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path d="M370 118 Q374 108 370 98" stroke="rgba(160,100,60,.3)" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <!-- クッキー -->
+            <circle cx="310" cy="162" r="12" fill="#d4a060"/>
+            <circle cx="310" cy="162" r="9" fill="#c89050"/>
+            <circle cx="307" cy="159" r="2" fill="#8a4020"/>
+            <circle cx="313" cy="163" r="2" fill="#8a4020"/>
+            <circle cx="310" cy="167" r="1.5" fill="#8a4020"/>
+            <!-- 葉っぱ装飾 右隅 -->
+            <ellipse cx="466" cy="60" rx="20" ry="8" fill="#a0c070" opacity=".5" transform="rotate(-20 466 60)"/>
+            <ellipse cx="476" cy="76" rx="22" ry="7" fill="#90b060" opacity=".4" transform="rotate(15 476 76)"/>
+            <!-- 左テキスト -->
+            <text x="20" y="78" font-family="sans-serif" font-size="8" fill="#c8783a" letter-spacing="2">NAGOYA · EST.2022</text>
+            <text x="20" y="104" font-family="serif" font-size="20" font-weight="bold" fill="#3a2010">ゆっくりと、</text>
+            <text x="20" y="128" font-family="serif" font-size="20" font-weight="bold" fill="#3a2010">良い時間を。</text>
+            <text x="20" y="148" font-family="sans-serif" font-size="9" fill="#a07050">千種区 | テイクアウトOK</text>
+            <rect x="20" y="162" width="88" height="22" rx="11" fill="#c8783a"/>
+            <text x="64" y="176" font-size="9" fill="white" text-anchor="middle" font-family="sans-serif">メニューを見る</text>
+            <rect x="118" y="162" width="88" height="22" rx="11" fill="none" stroke="#c8783a" stroke-width="1.5"/>
+            <text x="162" y="176" font-size="9" fill="#c8783a" text-anchor="middle" font-family="sans-serif">来店予約</text>
+            <!-- 下部メニュー帯 -->
+            <rect y="188" width="480" height="112" fill="white"/>
+            <text x="20" y="208" font-size="11" font-weight="bold" fill="#3a2010" font-family="sans-serif">TODAY'S MENU</text>
+            <!-- 横スクロール風メニューカード -->
+            <rect x="14" y="216" width="108" height="72" rx="12" fill="#fdf6ee" stroke="#e8d0a8" stroke-width="1.5"/>
+            <text x="68" y="240" font-size="18" text-anchor="middle">☕</text>
+            <text x="68" y="256" font-size="10" font-weight="bold" fill="#3a2010" text-anchor="middle" font-family="sans-serif">ドリップコーヒー</text>
+            <text x="68" y="270" font-size="9" fill="#c8783a" text-anchor="middle" font-family="sans-serif">¥480〜</text>
+            <rect x="130" y="216" width="108" height="72" rx="12" fill="#fdf6ee" stroke="#e8d0a8" stroke-width="1.5"/>
+            <text x="184" y="240" font-size="18" text-anchor="middle">🍰</text>
+            <text x="184" y="256" font-size="10" font-weight="bold" fill="#3a2010" text-anchor="middle" font-family="sans-serif">本日のケーキ</text>
+            <text x="184" y="270" font-size="9" fill="#c8783a" text-anchor="middle" font-family="sans-serif">¥620〜</text>
+            <rect x="246" y="216" width="108" height="72" rx="12" fill="#fdf6ee" stroke="#e8d0a8" stroke-width="1.5"/>
+            <text x="300" y="240" font-size="18" text-anchor="middle">🥐</text>
+            <text x="300" y="256" font-size="10" font-weight="bold" fill="#3a2010" text-anchor="middle" font-family="sans-serif">クロワッサン</text>
+            <text x="300" y="270" font-size="9" fill="#c8783a" text-anchor="middle" font-family="sans-serif">¥380〜</text>
+            <!-- AIチャットカード -->
+            <rect x="362" y="216" width="104" height="72" rx="12" fill="#fff8f0" stroke="#c8783a" stroke-width="1.5"/>
+            <text x="414" y="238" font-size="10" fill="#c8783a" text-anchor="middle" font-weight="bold" font-family="sans-serif">☕ AIスタッフ</text>
+            <rect x="372" y="246" width="68" height="5" rx="2" fill="#f0d8b8"/>
+            <rect x="372" y="255" width="52" height="5" rx="2" fill="#f0d8b8"/>
+            <text x="414" y="277" font-size="8" fill="#c0905a" text-anchor="middle" font-family="sans-serif">席予約 · 本日の豆</text>
+            <circle cx="456" cy="265" r="12" fill="#c8783a"/>
+            <text x="456" y="269.5" font-size="12" text-anchor="middle" fill="white">💬</text>
+          </svg>
+        </div>
+        <div class="work-info">
+          <span class="work-tag" style="background:#fff8f0;color:#c8783a;border-color:#c8783a">☕ カフェ</span>
+          <h3>Café Moana</h3>
+          <p>ぬくもりある木調ナチュラルデザイン。本日のメニュー案内・席予約・テイクアウト対応をAIが会話形式でサポート。Instagramとの連動も対応。</p>
+          <div class="work-badges">
+            <span class="work-badge">AIチャット</span>
+            <span class="work-badge">席予約</span>
+            <span class="work-badge">テイクアウト</span>
+            <span class="work-badge">SNS連動</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /works-grid-bottom -->
+  </div>
+</section>
+
+<!-- FLOW -->
+<section class="section-flow" id="flow">
+  <div class="flow-inner">
+    <div class="section-label">ご依頼の流れ</div>
+    <h2 class="section-title">依頼から公開まで<br>こんな流れです！🗺️</h2>
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="step-num">01</div>
+        <div class="step-icon">☕</div>
+        <div class="step-title">無料相談</div>
+        <div class="step-desc">Zoomまたはお電話でお話を聞かせてください。どんなサイトにしたいかをヒアリングします。</div>
+        <span class="step-badge">無料</span>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">02</div>
+        <div class="step-icon">📝</div>
+        <div class="step-title">お見積もり</div>
+        <div class="step-desc">ご要望に合わせてお見積もりをご提示。納得いただいてからご契約です。</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">03</div>
+        <div class="step-icon">🎨</div>
+        <div class="step-title">制作・確認</div>
+        <div class="step-desc">制作開始。途中で確認いただきながら進めます。修正は3回まで無料！</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">04</div>
+        <div class="step-icon">🎉</div>
+        <div class="step-title">公開！</div>
+        <div class="step-desc">サイト公開後も操作方法をレクチャー。安心してご利用いただけます。</div>
+        <span class="step-badge">公開後サポート</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO -->
+<section class="section-demo" id="demo">
+  <div class="demo-inner">
+    <div class="demo-text">
+      <div class="section-label">AIチャット体験</div>
+      <h2 class="section-title">実際に<br>試してみて！👇</h2>
+      <p>右のチャットは実際に導入できるAIスタッフのデモです。お店の情報を学習させることで、こんな自然な会話ができるようになります。</p>
+      <div class="demo-features">
+        <div class="demo-feat">
+          <div class="feat-icon" style="background:#EEF8FF">💬</div>
+          <span class="feat-text">自然な日本語で会話できる</span>
+        </div>
+        <div class="demo-feat">
+          <div class="feat-icon" style="background:#FFF0F6">📅</div>
+          <span class="feat-text">予約受付・日程調整も対応</span>
+        </div>
+        <div class="demo-feat">
+          <div class="feat-icon" style="background:#F0FFF4">🌙</div>
+          <span class="feat-text">深夜・早朝も自動で対応</span>
+        </div>
+        <div class="demo-feat">
+          <div class="feat-icon" style="background:#FFFBE6">🛡️</div>
+          <span class="feat-text">お店の情報だけ回答（安全）</span>
+        </div>
+      </div>
+      <span class="btn-main" style="cursor:default">このAIを自分のお店に入れたい！</span>
+    </div>
+    <div class="demo-card">
+      <div class="demo-bar">
+        <span>🌸</span>
+        <span class="demo-bar-title">美容室 Hana AIスタッフ</span>
+        <span class="demo-bar-sub">🟢 オンライン</span>
+      </div>
+      <div class="demo-msgs" id="demoMsgs">
+        <div class="bot-icon">💇</div>
+        <div class="msg bot">こんにちは！美容室Hanaのスタッフです🌸<br>何でもお気軽にどうぞ！</div>
+      </div>
+      <div class="qbtn-row">
+        <button class="qbtn" onclick="sendQ('料金を教えて')">💰 料金</button>
+        <button class="qbtn" onclick="sendQ('予約したい')">📅 予約</button>
+        <button class="qbtn" onclick="sendQ('営業時間は？')">🕐 営業時間</button>
+        <button class="qbtn" onclick="sendQ('おすすめは？')">⭐ おすすめ</button>
+      </div>
+      <div class="demo-input-row">
+        <input class="demo-input" id="demoInput" type="text" placeholder="質問を入力してください..." onkeydown="if(event.key==='Enter')sendMsg()">
+        <button class="demo-send" onclick="sendMsg()">↑</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section-cta" id="cta">
+  <div class="cta-inner">
+    <div class="cta-bubble">🎉 今なら相談無料！</div>
+    <h2>まずは気軽に<br>話してみよう！</h2>
+    <p>「うちのお店に合うか不安…」「費用はどれくらい？」なんでも聞いてください。相談は完全無料です！</p>
+    <div class="cta-btns">
+      <div class="btn-main">📩 ful49035@gmail.com</div>
+      <div class="btn-sub" style="cursor:default">📞 070-2213-7820</div>
+    </div>
+    <div class="cta-box">
+      <div class="cta-box-item">✅ 相談無料</div>
+      <div class="cta-box-item">✅ 見積もり無料</div>
+      <div class="cta-box-item">✅ 強引な営業なし</div>
+      <div class="cta-box-item">✅ 全国対応</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">AIっと制作 🤖</span>
+  <p>AI搭載ホームページ制作 | 全国対応</p>
+  <p style="margin-top:12px;font-size:12px;opacity:.4">© 2026 AIっと制作. All rights reserved.</p>
+</footer>
+
+<script>
+// ── PLAN MODAL ──
+const plans = {
+  basic: {
+    icon: '🌐',
+    name: 'ベーシックプラン',
+    price: '¥180,000〜',
+    color: '#4ECDC4',
+    bg: '#EEF8FF',
+    tagline: 'まずはしっかりしたホームページを作りたい方へ',
+    includes: [
+      ['📄','ページ数','トップ＋最大5ページ'],
+      ['📱','スマホ対応','完全レスポンシブ対応'],
+      ['📬','お問い合わせフォーム','メール自動返信付き'],
+      ['🗺️','Googleマップ埋め込み','アクセスページに掲載'],
+      ['🔍','基本SEO設定','タイトル・メタ設定込み'],
+      ['🛠️','修正回数','3回まで無料'],
+      ['📦','納期目安','約3〜4週間'],
+    ],
+    notes: '※ドメイン・サーバー費用は別途実費',
+    cta: 'ベーシックで相談する',
+  },
+  ai: {
+    icon: '🤖',
+    name: 'AIチャット付きプラン',
+    price: '¥260,000〜',
+    color: '#FF6B9D',
+    bg: '#FFF0F6',
+    tagline: '一番人気！24時間AIスタッフがお客様対応',
+    includes: [
+      ['🌐','ベーシック全内容','上記すべて含む'],
+      ['🤖','AIチャットボット','Claude API搭載'],
+      ['💬','自動FAQ対応','営業時間・料金・場所など'],
+      ['📅','予約受付','問い合わせ→日程調整まで'],
+      ['⚙️','初期学習設定','お店情報をAIに覚えさせる'],
+      ['🌙','24時間対応','深夜・休日も自動返答'],
+      ['📊','月額API費用','¥150〜500円程度（実費）'],
+    ],
+    notes: '※月額保守は別途オプションで対応可',
+    cta: 'AIプランで相談する',
+  },
+  full: {
+    icon: '🚀',
+    name: 'フル対応プラン',
+    price: '月¥15,000〜',
+    color: '#4ADE80',
+    bg: '#F0FFF4',
+    tagline: '制作から運用まで丸ごとお任せ！',
+    includes: [
+      ['🤖','AIチャット付きプラン全内容','上記すべて含む'],
+      ['🔧','月次保守・更新','情報更新を月1回対応'],
+      ['📈','SEO月次レポート','検索順位・アクセス分析'],
+      ['💡','改善提案','毎月ミーティング（30分）'],
+      ['🛡️','セキュリティ対応','SSL・バックアップ込み'],
+      ['📞','優先サポート','メール・LINE対応'],
+      ['🎁','制作費','初回¥220,000（月額契約で割引）'],
+    ],
+    notes: '※最低契約期間6ヶ月〜',
+    cta: 'フルプランで相談する',
+  },
+};
+
+function openModal(key) {
+  const p = plans[key];
+  const rows = p.includes.map(([icon, label, val]) => `
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f0ede8">
+      <span style="font-size:20px;width:28px;text-align:center">${icon}</span>
+      <span style="font-size:13px;color:#666;min-width:120px">${label}</span>
+      <span style="font-size:14px;font-weight:500;color:#1a1a1a">${val}</span>
+    </div>`).join('');
+
+  document.getElementById('modalContent').innerHTML = `
+    <div style="background:${p.bg};padding:28px 28px 20px;border-radius:22px 22px 0 0;border-bottom:2px solid var(--ink)">
+      <div style="font-size:44px;margin-bottom:10px">${p.icon}</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:26px;color:#1a1a1a;margin-bottom:6px">${p.name}</div>
+      <div style="font-size:13px;color:#666;margin-bottom:16px">${p.tagline}</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:36px;color:${p.color}">${p.price}</div>
+    </div>
+    <div style="padding:20px 28px">
+      <div style="font-size:13px;font-weight:700;color:#888;margin-bottom:4px;letter-spacing:.05em">含まれるもの</div>
+      ${rows}
+      <div style="margin-top:14px;font-size:12px;color:#aaa">${p.notes}</div>
+      <div style="display:block;margin-top:20px;background:${p.color};color:white;text-align:center;padding:14px;border-radius:100px;border:2px solid #1a1a1a;box-shadow:3px 3px 0 #1a1a1a;font-weight:700;font-size:15px">📩 ${p.cta}</div>
+    </div>`;
+
+  const overlay = document.getElementById('modalOverlay');
+  overlay.style.display = 'flex';
+  requestAnimationFrame(() => {
+    document.getElementById('modalBox').style.transform = 'scale(1)';
+    document.getElementById('modalBox').style.opacity = '1';
+  });
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').style.display = 'none';
+}
+
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
+
+// ── DEMO CHAT ──
+const responses = {
+  '料金を教えて': 'カット ¥3,800〜、カラー ¥6,500〜、パーマ ¥8,000〜となっています💇‍♀️\nセットメニューもお得ですよ！詳しくはお気軽にどうぞ！',
+  '予約したい': '予約承ります！📅\nご希望の日時と施術内容を教えてください。\n例：「3/20の14時にカット希望」',
+  '営業時間は？': '営業時間は以下の通りです🕐\n📅 火〜日：10:00〜20:00\n🚫 定休日：毎週月曜日\nご予約はお電話またはこのチャットで承ります！',
+  'おすすめは？': '一番人気は「カット＋トリートメント」セットです✨\nつやつやの仕上がりで大好評！¥6,500でお得になっています。初めての方に特におすすめです🌸'
+};
+
+function addMsg(text, isUser){
+  const area = document.getElementById('demoMsgs');
+  const div = document.createElement('div');
+  div.className = 'msg ' + (isUser ? 'user' : 'bot');
+  div.innerText = text;
+  area.appendChild(div);
+  area.scrollTop = area.scrollHeight;
+}
+
+function sendQ(q){
+  addMsg(q, true);
+  setTimeout(() => {
+    const r = responses[q] || 'ありがとうございます！担当者に確認してご連絡いたします😊';
+    addMsg(r, false);
+  }, 600);
+}
+
+function sendMsg(){
+  const input = document.getElementById('demoInput');
+  const val = input.value.trim();
+  if(!val) return;
+  addMsg(val, true);
+  input.value = '';
+  setTimeout(() => {
+    let found = null;
+    for(const [k,v] of Object.entries(responses)){
+      if(val.includes(k.slice(0,3))) { found = v; break; }
+    }
+    addMsg(found || 'ありがとうございます！お気軽にご質問ください😊\nスタッフが確認次第ご連絡いたします。', false);
+  }, 700);
+}
+</script>
+</body>
+</html>
